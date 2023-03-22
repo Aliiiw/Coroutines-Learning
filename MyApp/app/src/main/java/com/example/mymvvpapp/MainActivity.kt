@@ -1,6 +1,7 @@
 package com.example.mymvvpapp
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -20,9 +21,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mymvvpapp.data.model.Post
 import com.example.mymvvpapp.ui.theme.MyMVVPAppTheme
 import com.example.mymvvpapp.viewmodel.PostsViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
+    @SuppressLint("CoroutineCreationDuringComposition")
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,7 +39,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ObservePostsViewModel()
+                    Log.e("2323", "main thread name is: ${Thread.currentThread().name}")
+
+
+                    //Coroutines
+                    GlobalScope.launch {
+
+                        Log.e("2323", "App start")
+
+                        //delay : takhir bendazim too anjam kar ha
+                        //suspend hast pas hamishe too scope coroutine bayad bashe
+                        delay(3000)
+
+                        //Log.e("2323", "hello")
+                        Log.e("2323", "the thread name is: ${Thread.currentThread().name}")
+
+                    } //khatarnake estefade ziad azash Global Scope
                 }
             }
         }

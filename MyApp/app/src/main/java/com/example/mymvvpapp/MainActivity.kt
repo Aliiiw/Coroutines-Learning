@@ -25,6 +25,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
 
@@ -39,22 +40,33 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Log.e("2323", "main thread name is: ${Thread.currentThread().name}")
+                    //Log.e("2323", "main thread name is: ${Thread.currentThread().name}")
 
 
                     //Coroutines
-                    GlobalScope.launch {
 
-                        Log.e("2323", "App start")
+                    repeat(100_000){
+                        GlobalScope.launch {
 
-                        //delay : takhir bendazim too anjam kar ha
-                        //suspend hast pas hamishe too scope coroutine bayad bashe
-                        delay(3000)
+                            //Log.e("2323", "App start")
 
-                        //Log.e("2323", "hello")
-                        Log.e("2323", "the thread name is: ${Thread.currentThread().name}")
+                            //delay : takhir bendazim too anjam kar ha
+                            //suspend hast pas hamishe too scope coroutine bayad bashe
+                            delay(1000)
 
-                    } //khatarnake estefade ziad azash Global Scope
+                            //Log.e("2323", "hello")
+                            Log.e("2323", "the thread name $it is: ${Thread.currentThread().name}")
+
+                        }
+                    }
+                     //khatarnake estefade ziad azash Global Scope
+//                    repeat(100_000) {
+//                        thread {
+//                            Thread.sleep(1000)
+//                            Log.e("2323", "thread name ${Thread.currentThread().name}")
+//                        }
+//                    }
+
                 }
             }
         }

@@ -42,31 +42,33 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     runBlocking {
-                        Log.e("2323", "start App")
+                        //ui works
+                        GlobalScope.launch(context = Dispatchers.Main) {
+                            Log.e("2323", "Main in : Thread -> ${Thread.currentThread().name}")
 
-                        val job1 = GlobalScope.launch {
-                            repeat(100) {
-                                delay(10)
-                                Log.e("2323", "job1 is working ${it + 1} %")
-                                if (isActive){
-                                    Log.e("2323", "job1 is working ${it + 1} %")
-                                }
-                            }
+                        }
+
+                        launch(context = Dispatchers.Unconfined) {
+                            Log.e(
+                                "2323",
+                                "Unconfined1 in : Thread -> ${Thread.currentThread().name}"
+                            )
+                            delay(1000)
+                            Log.e(
+                                "2323",
+                                "Unconfined2 in : Thread -> ${Thread.currentThread().name}"
+                            )
                         }
 
 
-                        job1.invokeOnCompletion {
-                            Log.e("2323", "job1 is complete")
+                        launch(context = Dispatchers.IO) {
+                            Log.e("2323", "IO in : Thread -> ${Thread.currentThread().name}")
                         }
 
-                        //delay(1000)
-
-                        //job1.join()
-                        //job1.cancel()
-
-
-
-                        Log.e("2323", "resume App")
+                        //cpu heavy works
+                        launch(context = Dispatchers.Default) {
+                            Log.e("2323", "Default in : Thread -> ${Thread.currentThread().name}")
+                        }
                     }
                 }
             }

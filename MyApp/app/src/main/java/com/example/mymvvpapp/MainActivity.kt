@@ -28,6 +28,9 @@ import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
 
+    var counter: Int = 0
+
+
     @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,26 +42,36 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    runBlocking {
-//                        launch(CoroutineName(name = "my coroutines")) {
-//
-//                            Log.e(
-//                                "2323",
-//                                "Coroutines name is : ${this.coroutineContext.get(CoroutineName.Key)}"
-//                            )
-//                        }
+                    Log.e("2323", "start App")
 
-                        launch(context = Dispatchers.IO) {
-
-                            Log.e(
-                                "2323",
-                                "Coroutines name is : ${this.coroutineContext.get(CoroutineName.Key)}"
-                            )
-                        }
+                    GlobalScope.launch {
+                        sayHello()
                     }
+
+                    GlobalScope.launch {
+                        sayHi()
+                    }
+
+                    Log.e("2323", "bottom of globals")
+                    Log.e("2323", "counter is: $counter")
+
+                    Thread.sleep(5000)
+                    Log.e("2323", "counter is: $counter")
                 }
             }
         }
+    }
+
+    suspend fun sayHello() {
+        delay(2000)
+        Log.e("2323", "hello")
+        counter++
+    }
+
+    suspend fun sayHi() {
+        delay(4000)
+        Log.e("2323", "hi")
+        counter++
     }
 
 

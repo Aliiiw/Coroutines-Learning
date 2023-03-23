@@ -39,7 +39,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ObservePostsViewModel()
+                    runBlocking {
+//                        launch(CoroutineName(name = "my coroutines")) {
+//
+//                            Log.e(
+//                                "2323",
+//                                "Coroutines name is : ${this.coroutineContext.get(CoroutineName.Key)}"
+//                            )
+//                        }
+
+                        launch(context = Dispatchers.IO) {
+
+                            Log.e(
+                                "2323",
+                                "Coroutines name is : ${this.coroutineContext.get(CoroutineName.Key)}"
+                            )
+                        }
+                    }
                 }
             }
         }

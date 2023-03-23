@@ -25,6 +25,7 @@ import com.example.mymvvpapp.ui.theme.MyMVVPAppTheme
 import com.example.mymvvpapp.viewmodel.PostsViewModel
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread
+import kotlin.system.measureTimeMillis
 
 class MainActivity : ComponentActivity() {
 
@@ -42,39 +43,41 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     runBlocking {
-                        //ui works
-                        GlobalScope.launch(context = Dispatchers.Main) {
-                            Log.e("2323", "Main in : Thread -> ${Thread.currentThread().name}")
+//                        val deferred = async {
+//
+//                        }
 
+                        val time = measureTimeMillis {
+                            val aDeffered = async { callApi1() }
+                            val bDeffered = async { callApi2() }
+
+                            Log.e("2323", "sum is: ${aDeffered.await() + bDeffered.await()}")
                         }
-
-                        launch(context = Dispatchers.Unconfined) {
-                            Log.e(
-                                "2323",
-                                "Unconfined1 in : Thread -> ${Thread.currentThread().name}"
-                            )
-                            delay(1000)
-                            Log.e(
-                                "2323",
-                                "Unconfined2 in : Thread -> ${Thread.currentThread().name}"
-                            )
-                        }
+                        Log.e("2323", "time is: $time")
 
 
-                        launch(context = Dispatchers.IO) {
-                            Log.e("2323", "IO in : Thread -> ${Thread.currentThread().name}")
-                        }
-
-                        //cpu heavy works
-                        launch(context = Dispatchers.Default) {
-                            Log.e("2323", "Default in : Thread -> ${Thread.currentThread().name}")
-                        }
+//                        val time = measureTimeMillis {
+//                            val a = callApi1()
+//                            val b = callApi2()
+//
+//                            Log.e("2323", "sum is: ${a + b}")
+//                        }
+//                        Log.e("2323", "time is: $time")
                     }
                 }
             }
         }
     }
 
+    suspend fun callApi1(): Int {
+        delay(3000)
+        return 3
+    }
+
+    suspend fun callApi2(): Int {
+        delay(4000)
+        return 5
+    }
 
     @Composable
     private fun ObservePostsViewModel() {

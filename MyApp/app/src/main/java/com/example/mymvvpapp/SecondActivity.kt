@@ -2,7 +2,6 @@ package com.example.mymvvpapp
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -19,14 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.mymvvpapp.data.model.Post
 import com.example.mymvvpapp.ui.theme.MyMVVPAppTheme
 import com.example.mymvvpapp.viewmodel.PostsViewModel
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
-class MainActivity : ComponentActivity() {
+class SecondActivity : ComponentActivity() {
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(DelicateCoroutinesApi::class)
@@ -39,27 +37,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
-                    lifecycleScope.launchWhenStarted {
-
-                        repeat(100_000) {
-                            delay(1000)
-                            Log.e("2323", it.toString())
-                        }
-                    }
-
-                    GlobalScope.launch {
-                        delay(7000)
-                        Intent(this@MainActivity, SecondActivity::class.java).also {
-                            startActivity(it)
-                            //finish()
-                        }
-                    }
+                    Text(text = "Second")
                 }
             }
         }
     }
-
 
     @Composable
     private fun ObservePostsViewModel() {
@@ -72,20 +54,20 @@ class MainActivity : ComponentActivity() {
 
         LaunchedEffect(key1 = Unit) {
 
-            val viewModel = ViewModelProvider(this@MainActivity).get(PostsViewModel::class.java)
+            val viewModel = ViewModelProvider(this@SecondActivity).get(PostsViewModel::class.java)
             viewModel.getAllPostsRequest()
 
-            viewModel.postsList.observe(this@MainActivity) { posts ->
+            viewModel.postsList.observe(this@SecondActivity) { posts ->
                 postsList = posts
             }
 
-            viewModel.postsListError.observe(this@MainActivity) { isError ->
+            viewModel.postsListError.observe(this@SecondActivity) { isError ->
                 isError?.let {
                     Log.e("2323", isError)
                 }
             }
 
-            viewModel.loading.observe(this@MainActivity) { isLoading ->
+            viewModel.loading.observe(this@SecondActivity) { isLoading ->
                 Log.e("2323", isLoading.toString())
             }
         }

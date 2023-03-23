@@ -39,39 +39,38 @@ class MainActivity : ComponentActivity() {
             MyMVVPAppTheme {
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    Log.e("2323", "start App")
+                    runBlocking {
+                        Log.e("2323", "start App")
 
-                    GlobalScope.launch {
-                        sayHello()
+                        val job1 = GlobalScope.launch {
+                            repeat(100) {
+                                delay(10)
+                                Log.e("2323", "job1 is working ${it + 1} %")
+                                if (isActive){
+                                    Log.e("2323", "job1 is working ${it + 1} %")
+                                }
+                            }
+                        }
+
+
+                        job1.invokeOnCompletion {
+                            Log.e("2323", "job1 is complete")
+                        }
+
+                        //delay(1000)
+
+                        //job1.join()
+                        //job1.cancel()
+
+
+
+                        Log.e("2323", "resume App")
                     }
-
-                    GlobalScope.launch {
-                        sayHi()
-                    }
-
-                    Log.e("2323", "bottom of globals")
-                    Log.e("2323", "counter is: $counter")
-
-                    Thread.sleep(5000)
-                    Log.e("2323", "counter is: $counter")
                 }
             }
         }
-    }
-
-    suspend fun sayHello() {
-        delay(2000)
-        Log.e("2323", "hello")
-        counter++
-    }
-
-    suspend fun sayHi() {
-        delay(4000)
-        Log.e("2323", "hi")
-        counter++
     }
 
 

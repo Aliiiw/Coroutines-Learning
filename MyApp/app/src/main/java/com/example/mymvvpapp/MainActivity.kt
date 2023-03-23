@@ -21,10 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mymvvpapp.data.model.Post
 import com.example.mymvvpapp.ui.theme.MyMVVPAppTheme
 import com.example.mymvvpapp.viewmodel.PostsViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
@@ -40,34 +37,35 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //Log.e("2323", "main thread name is: ${Thread.currentThread().name}")
+                    Log.e("2323", "app is start")
 
-
-                    //Coroutines
-
-                    repeat(100_000){
-                        GlobalScope.launch {
-
-                            //Log.e("2323", "App start")
-
-                            //delay : takhir bendazim too anjam kar ha
-                            //suspend hast pas hamishe too scope coroutine bayad bashe
-                            delay(1000)
-
-                            //Log.e("2323", "hello")
-                            Log.e("2323", "the thread name $it is: ${Thread.currentThread().name}")
-
-                        }
-                    }
-                     //khatarnake estefade ziad azash Global Scope
-//                    repeat(100_000) {
-//                        thread {
-//                            Thread.sleep(1000)
-//                            Log.e("2323", "thread name ${Thread.currentThread().name}")
+//                    runBlocking {
+//                        launch {
+//                            delay(1000)
+//                            Log.e("2323", "runBlocking 1 start")
+//                        }
+//
+//                        launch {
+//                            delay(2000)
+//                            Log.e("2323", "runBlocking 2 start")
 //                        }
 //                    }
+//
+//                    Log.e("2323", "app is resume")
+//                }
+                    GlobalScope.launch {
 
+                        delay(1000)
+                        Log.e("2323", "runBlocking 1 start")
+
+
+                        delay(2000)
+                        Log.e("2323", "runBlocking 2 start")
+
+                    }
+//
                 }
+                Log.e("2323", "app is resume")
             }
         }
     }

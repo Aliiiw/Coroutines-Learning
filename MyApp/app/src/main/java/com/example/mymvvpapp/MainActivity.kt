@@ -43,40 +43,32 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     runBlocking {
-//                        val deferred = async {
-//
+                        val errorHandler =
+                            CoroutineExceptionHandler { coroutineContext, throwable ->
+                                Log.e("2323", "error is ${throwable.message}")
+                            }
+
+//                        val job = GlobalScope.launch(Dispatchers.Default + errorHandler) {
+//                            delay(3000)
+//                            throw java.lang.NullPointerException()
 //                        }
+//
+//                        job.join()
 
-                        val time = measureTimeMillis {
-                            val aDeffered = async { callApi1() }
-                            val bDeffered = async { callApi2() }
-
-                            Log.e("2323", "sum is: ${aDeffered.await() + bDeffered.await()}")
+                        val deffered = GlobalScope.async {
+                            delay(3000)
+                            throw java.lang.NullPointerException()
                         }
-                        Log.e("2323", "time is: $time")
 
-
-//                        val time = measureTimeMillis {
-//                            val a = callApi1()
-//                            val b = callApi2()
-//
-//                            Log.e("2323", "sum is: ${a + b}")
-//                        }
-//                        Log.e("2323", "time is: $time")
+                        try {
+                            deffered.await()
+                        } catch (e: java.lang.Exception) {
+                            Log.e("2323", "error is ${e.message}")
+                        }
                     }
                 }
             }
         }
-    }
-
-    suspend fun callApi1(): Int {
-        delay(3000)
-        return 3
-    }
-
-    suspend fun callApi2(): Int {
-        delay(4000)
-        return 5
     }
 
     @Composable

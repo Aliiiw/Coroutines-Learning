@@ -39,22 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
-                    lifecycleScope.launchWhenStarted {
-
-                        repeat(100_000) {
-                            delay(1000)
-                            Log.e("2323", it.toString())
-                        }
-                    }
-
-                    GlobalScope.launch {
-                        delay(7000)
-                        Intent(this@MainActivity, SecondActivity::class.java).also {
-                            startActivity(it)
-                            //finish()
-                        }
-                    }
+                    ObservePostsViewModel()
                 }
             }
         }

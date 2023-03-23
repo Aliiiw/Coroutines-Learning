@@ -2,6 +2,7 @@ package com.example.mymvvpapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mymvvpapp.data.model.Post
 import com.example.mymvvpapp.data.network.ApiClient
 import kotlinx.coroutines.CoroutineScope
@@ -20,8 +21,7 @@ class PostsViewModel : ViewModel() {
 
         loading.value = true
 
-        CoroutineScope(Dispatchers.IO).launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             val response = ApiClient.api.getAllPosts()
 
             withContext(Dispatchers.Main) {
@@ -37,5 +37,23 @@ class PostsViewModel : ViewModel() {
                 }
             }
         }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//
+//            val response = ApiClient.api.getAllPosts()
+//
+//            withContext(Dispatchers.Main) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    response.body()?.let { allPosts ->
+//                        postsList.value = allPosts
+//                        postsListError.value = null
+//                        loading.value = false
+//                    }
+//                } else {
+//                    postsListError.value = response.message()
+//                    loading.value = false
+//                }
+//            }
+//        }
     }
 }
